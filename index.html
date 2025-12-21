@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* --- GLOBAL & TEXTURE --- */
+        /* --- GLOBAL SETTINGS --- */
         html, body {
             height: auto !important;
             min-height: 100%;
@@ -20,7 +20,7 @@
             scroll-behavior: smooth;
         }
 
-        /* Noise Texture (Kesan Premium) */
+        /* Noise Texture */
         body::before {
             content: "";
             position: fixed;
@@ -44,43 +44,60 @@
             transform: translateY(0);
         }
 
-        /* --- SLIDER TESTIMONI --- */
+        /* --- SLIDER TESTIMONI SMART (PAUSE ON TOUCH) --- */
         .slider-container {
             position: relative;
             width: 100%;
             overflow: hidden;
+            padding: 20px 0;
+            /* Memastikan scroll halaman tetap jalan meski jari di atas slider */
+            touch-action: pan-y; 
         }
-        /* Fade Effect di Kiri Kanan Slider */
+
+        /* Fade Effect Kiri Kanan */
         .slider-container::before,
         .slider-container::after {
             content: "";
             position: absolute;
-            top: 0; width: 40px; height: 100%;
+            top: 0; width: 30px; height: 100%;
             z-index: 2;
+            pointer-events: none;
         }
         .slider-container::before { left: 0; background: linear-gradient(to right, #f9fafb, transparent); }
         .slider-container::after { right: 0; background: linear-gradient(to left, #f9fafb, transparent); }
 
         .slide-track {
             display: flex;
-            width: calc(260px * 10);
-            animation: scroll 35s linear infinite;
+            /* RUMUS: (250px lebar + 10px margin) * 30 Total Slide (15 Asli + 15 Duplikat) */
+            width: calc(260px * 30); 
+            animation: scroll 60s linear infinite;
         }
+
+        /* FITUR PAUSE: Berhenti saat disentuh/hover */
+        .slider-container:hover .slide-track,
+        .slider-container:active .slide-track {
+            animation-play-state: paused;
+        }
+
         .slide {
-            height: 160px;
-            width: 250px;
+            height: 150px; 
+            width: 250px;  
             margin-right: 10px;
             flex-shrink: 0;
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid #e5e7eb;
             background: #fff;
+            /* Cursor tangan biar user tau bisa disentuh */
+            cursor: grab; 
         }
+        .slide:active { cursor: grabbing; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
         
         @keyframes scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-260px * 5)); }
+            /* Geser sejauh 15 slide asli (15 * 260px) */
+            100% { transform: translateX(calc(-260px * 15)); } 
         }
 
         /* Accordion Style */
@@ -141,22 +158,22 @@
                     </div>
                     <div class="pt-8">
                         <h3 class="text-sm font-bold text-gray-900">Becoming Remote Worker</h3>
-                        <p class="text-[10px] text-gray-400">Status, Selalu Update!</p>
+                        <p class="text-[10px] text-gray-400">Status: Selalu Update!</p>
                     </div>
                 </div>
 
                 <div class="space-y-4 pl-2 border-l-2 border-gray-100 ml-2">
                     <div class="flex items-start gap-3">
                         <div class="w-4 h-4 rounded bg-blue-500 flex items-center justify-center text-white text-[9px] shrink-0 mt-0.5">✓</div>
-                        <p class="text-xs text-gray-600 leading-snug"><strong>Selalu Fresh</strong> Kalau ada cara baru atau tools baru, aku update materinya dan kamu langsung dapet saat itu juga.</p>
+                        <p class="text-xs text-gray-600 leading-snug"><strong>Selalu Fresh:</strong> Kalau ada cara baru atau tools baru, aku update materinya dan kamu langsung dapet saat itu juga.</p>
                     </div>
                     <div class="flex items-start gap-3">
                         <div class="w-4 h-4 rounded bg-blue-500 flex items-center justify-center text-white text-[9px] shrink-0 mt-0.5">✓</div>
-                        <p class="text-xs text-gray-600 leading-snug"><strong>Hemat Memori</strong> Ga perlu download file berat. Buka di HP sat-set sambil rebahan.</p>
+                        <p class="text-xs text-gray-600 leading-snug"><strong>Hemat Memori:</strong> Ga perlu download file berat. Buka di HP sat-set sambil rebahan.</p>
                     </div>
                     <div class="flex items-start gap-3">
                         <div class="w-4 h-4 rounded bg-blue-500 flex items-center justify-center text-white text-[9px] shrink-0 mt-0.5">✓</div>
-                        <p class="text-xs text-gray-600 leading-snug"><strong>Sekali Bayar</strong> Cukup beli sekali di awal, update-nya gratis seumur hidup.</p>
+                        <p class="text-xs text-gray-600 leading-snug"><strong>Sekali Bayar:</strong> Cukup beli sekali di awal, update-nya gratis seumur hidup.</p>
                     </div>
                 </div>
             </div>
@@ -197,14 +214,15 @@
 
     <section class="w-full py-16 bg-gray-50 reveal-node">
         <h3 class="text-center text-xs font-bold tracking-[0.2em] text-gray-400 mb-8 uppercase">Kata Mereka</h3>
+        <p class="text-center text-[9px] text-gray-400 mb-2 italic -mt-6 opacity-70">(Tahan untuk membaca)</p>
         
         <div class="slider-container">
             <div class="slide-track">
+                
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285052916_4893025.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285117547_3889433.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285138113_4078804.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285163018_1710519.png" alt="Testi"></div>
-                
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285186591_5487807.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285210410_1855670.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285243668_6280437.png" alt="Testi"></div>
@@ -216,6 +234,23 @@
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285401720_9536812.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285440493_2918523.png" alt="Testi"></div>
                 <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285462691_8601067.png" alt="Testi"></div>
+
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285052916_4893025.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285117547_3889433.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285138113_4078804.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285163018_1710519.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285186591_5487807.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285210410_1855670.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285243668_6280437.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285268476_3529886.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285295053_9172963.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285315868_7959000.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285352821_5360441.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285375094_4323414.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285401720_9536812.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285440493_2918523.png" alt="Testi"></div>
+                <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285462691_8601067.png" alt="Testi"></div>
+                
             </div>
         </div>
     </section>
@@ -262,9 +297,11 @@
             Gabung sekarang dan temukan ritme kerjamu sendiri bersama komunitas.
         </p>
         
-        <p class="text-[10px] font-bold text-gray-800 tracking-widest uppercase animate-bounce">
-            Klik Tombol di Bawah Untuk Join 👇
-        </p>
+        <div class="animate-bounce flex flex-col items-center gap-1 opacity-80">
+            <p class="text-[10px] font-bold text-gray-800 tracking-widest uppercase">
+                Klik Tombol di Bawah Untuk Join 👇
+            </p>
+        </div>
         
     </section>
 
