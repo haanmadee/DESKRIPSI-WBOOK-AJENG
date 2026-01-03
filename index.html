@@ -5,18 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remote Work Ecosystem</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* --- PERBAIKAN UTAMA DI SINI --- */
-        /* Kita tidak lagi mengganggu html/body bawaan Lynk.id */
-        
+        /* --- RESET & SETUP --- */
         .custom-wrapper {
             font-family: 'Montserrat', sans-serif; 
             background-color: #fcfcfc;
             color: #1a1a1a;
             width: 100%;
-            overflow-x: hidden; /* Mencegah geser samping hanya di konten kita */
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -35,65 +33,103 @@
 
         /* --- ANIMATIONS --- */
         .reveal-node {
-            opacity: 0;
-            transform: translateY(20px);
+            opacity: 0; transform: translateY(20px);
             transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .reveal-node.active {
-            opacity: 1;
-            transform: translateY(0);
+        .reveal-node.active { opacity: 1; transform: translateY(0); }
+
+        /* --- OFFER CARD (GLASS STYLE) --- */
+        .offer-glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: left;
+            margin: 25px auto;
+            max-width: 340px;
+            position: relative;
+            overflow: hidden;
         }
+        .offer-glass-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, #1e40af, #3b82f6);
+        }
+        
+        .check-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 12px; font-size: 11px; color: #4b5563; padding-left: 5px;
+        }
+        .check-icon {
+            color: #2563eb; font-weight: 800; font-size: 14px; margin-top: 1px;
+        }
+
+        .webinar-box {
+            background: linear-gradient(to right, #fffbeb, #fff);
+            border: 2px solid #f59e0b;
+            border-radius: 12px; padding: 12px; margin: 15px 0;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .star-icon {
+            font-size: 24px; color: #f59e0b;
+            animation: pulse-star 2s infinite;
+        }
+        @keyframes pulse-star { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        .price-section {
+            text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #cbd5e1;
+        }
+
+        /* --- STATS GRID (2 KOLOM) --- */
+        .stats-grid {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; /* Ubah jadi 2 kolom */
+            gap: 15px; 
+            width: 100%; max-width: 280px; /* Lebar disesuaikan biar center */
+            margin-top: 50px; 
+            margin-bottom: 30px;
+            margin-left: auto; margin-right: auto;
+        }
+        .stat-box {
+            text-align: center; padding: 12px 5px;
+            background: white; border-radius: 12px;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- GALLERY SQUARE SLIDER --- */
+        .gallery-scroll {
+            display: flex; 
+            overflow-x: auto; 
+            gap: 15px;
+            padding: 10px 20px 30px 20px; 
+            scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            justify-content: center;
+        }
+        .gallery-scroll::-webkit-scrollbar { display: none; }
+        
+        .gallery-item {
+            flex: 0 0 160px; 
+            width: 160px; height: 160px; 
+            border-radius: 12px; overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08); position: relative;
+            scroll-snap-align: center;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- SLIDER TESTIMONI --- */
-        .slider-container {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            padding: 20px 0;
-            z-index: 10;
-        }
-        .slider-container::before,
-        .slider-container::after {
-            content: "";
-            position: absolute;
-            top: 0; width: 40px; height: 100%;
-            z-index: 2;
-            pointer-events: none;
-        }
-        .slider-container::before { left: 0; background: linear-gradient(to right, #fcfcfc, transparent); }
-        .slider-container::after { right: 0; background: linear-gradient(to left, #fcfcfc, transparent); }
-
-        .slide-track {
-            display: flex;
-            width: calc(260px * 30);
-            animation: scroll 60s linear infinite;
-        }
-        
-        /* Stop saat disentuh */
-        .slider-container:hover .slide-track,
-        .slider-container:active .slide-track {
-            animation-play-state: paused;
-        }
-
-        .slide {
-            height: 150px;
-            width: 250px;
-            margin-right: 10px;
-            flex-shrink: 0;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-        }
+        .slider-container { position: relative; width: 100%; overflow: hidden; padding: 20px 0; z-index: 10; }
+        .slide-track { display: flex; width: calc(260px * 16); animation: scroll 60s linear infinite; }
+        .slide { height: 150px; width: 250px; margin-right: 10px; flex-shrink: 0; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
-        
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-260px * 15)); }
-        }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-260px * 15)); } }
 
-        /* Accordion Style */
-        details > summary { list-style: none; outline: none; }
+        details > summary { list-style: none; outline: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
         details[open] summary ~ * { animation: sweep .3s ease-in-out; }
         @keyframes sweep { 0% {opacity: 0; transform: translateY(-5px)} 100% {opacity: 1; transform: translateY(0)} }
@@ -108,18 +144,18 @@
         </div>
 
         <section class="w-full px-6 py-12 flex flex-col items-center text-center relative z-10">
-            <div class="reveal-node">
+            <div class="reveal-node w-full">
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-800 rounded-full text-[9px] font-bold tracking-widest uppercase mb-5 border border-blue-100">
                     <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
                     Lifetime Access
                 </div>
 
-                <h1 class="text-4xl md:text-6xl font-serif font-bold leading-[1.1] mb-6 text-gray-900">
+                <h1 class="text-4xl md:text-6xl font-serif font-bold leading-[1.1] mb-2 text-gray-900">
                     Don't just read. <br> <span class="italic text-gray-400 font-light">Start doing.</span>
                 </h1>
                 
                 <p class="text-xs md:text-sm text-gray-600 leading-relaxed max-w-md mx-auto mb-8">
-                    Jalan pintas dari pengalamanku selama 6 tahun. Bukan sekadar Ebook PDF, tapi <strong>Ekosistem Belajar</strong> biar kamu nggak bingung sendirian.
+                    Jalan pintas dari pengalamanku selama 6 tahun. Bukan sekadar Ebook, tapi <strong>Ekosistem Belajar</strong> biar kamu nggak bingung sendirian.
                 </p>
                 
                 <div class="relative w-full max-w-md mx-auto h-[280px] md:h-[400px]">
@@ -133,12 +169,97 @@
                         <p class="text-lg font-serif font-bold text-gray-900">True Experience</p>
                     </div>
                 </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <p class="text-xl font-black text-blue-900">1000+</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-wide font-medium">Terjual</p>
+                    </div>
+                    <div class="stat-box">
+                        <p class="text-xl font-black text-yellow-500">4.9/5</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-wide font-medium">Rating</p>
+                    </div>
+                </div>
+
+                <div class="offer-glass-card mt-2">
+                    
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 pl-1">📦 WHAT YOU GET:</p>
+                    
+                    <div class="check-item">
+                        <span class="check-icon">✔</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800 leading-none">Ebook "Remote Worker"</p>
+                            <p class="text-[10px] text-gray-400 mt-1">Selalu update di Notion (Tanpa download)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="check-item">
+                        <span class="check-icon">✔</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-800 leading-none">Circle Community Group</p>
+                            <p class="text-[10px] text-gray-400 mt-1">Diskusi & Tanya Jawab 24/7</p>
+                        </div>
+                    </div>
+
+                    <div class="webinar-box">
+                        <div class="star-icon">★</div>
+                        <div>
+                            <p class="text-sm font-extrabold text-yellow-700 leading-tight">Webinar Rutin <span class="bg-red-500 text-white text-[8px] px-1.5 py-0.5 rounded ml-1">LIFETIME</span></p>
+                            <p class="text-[10px] text-yellow-800 mt-1 font-medium">Mentoring, Bedah CV, Simulasi</p>
+                        </div>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="flex justify-center items-center gap-2 mb-1">
+                            <span class="text-xs text-red-400 line-through font-semibold">Normal: Rp 399.000</span>
+                            <span class="text-[9px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold animate-pulse">⚡ LIMITED</span>
+                        </div>
+                        
+                        <div class="flex justify-center items-start gap-1 text-blue-900">
+                            <span class="text-lg font-bold mt-2">Rp</span>
+                            <span class="text-[54px] font-serif font-black leading-[0.9] tracking-tighter">129.900</span>
+                        </div>
+                        
+                        <p class="text-[10px] text-gray-400 mt-2 font-medium tracking-wide uppercase">Cukup Sekali Bayar</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="w-full px-6 py-20 bg-[#141e3d] text-white relative overflow-hidden reveal-node rounded-none md:rounded-2xl md:mx-auto md:max-w-4xl shadow-2xl z-10">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-blue-500 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+
+            <div class="relative z-10 text-center">
+                <div class="inline-block px-3 py-1 border border-blue-400/30 rounded-full text-[8px] font-bold tracking-widest text-blue-200 mb-6 uppercase bg-blue-900/40">
+                    ✨ Circle Remote Worker
+                </div>
+                
+                <h2 class="text-2xl md:text-3xl font-serif font-bold leading-tight mb-10">
+                    Inside The Circle
+                </h2>
+
+                <div class="gallery-scroll text-left">
+                    <div class="gallery-item">
+                        <img src="https://cdn.lynkid.my.id/draft-products/03-01-2026/1767410631191_1039633.png" alt="Live Webinar">
+                        <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[8px] px-1.5 py-0.5 rounded font-bold">LIVE</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://cdn.lynkid.my.id/draft-products/03-01-2026/1767410739970_1874290.png" alt="Grup Diskusi">
+                        <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[8px] px-1.5 py-0.5 rounded font-bold">DISKUSI</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://cdn.lynkid.my.id/draft-products/03-01-2026/1767410764577_9753056.png" alt="Materi">
+                        <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[8px] px-1.5 py-0.5 rounded font-bold">MATERI</span>
+                    </div>
+                </div>
+
             </div>
         </section>
 
         <section class="w-full px-6 py-16 bg-white reveal-node relative z-10">
             <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-10">
+                <div class="text-center mb-8">
                     <h2 class="text-xl font-serif font-bold mb-2">"Kenapa formatnya Notion?"</h2>
                     <p class="text-xs text-gray-500 max-w-sm mx-auto">Karena informasinya selalu update tanpa perlu unduh ulang.</p>
                 </div>
@@ -152,7 +273,7 @@
                         </div>
                         <div class="pt-8">
                             <h3 class="text-sm font-bold text-gray-900">Becoming Remote Worker</h3>
-                            <p class="text-[10px] text-gray-400">Status, Selalu Update!</p>
+                            <p class="text-[10px] text-gray-400">Status: Selalu Update!</p>
                         </div>
                     </div>
 
@@ -163,10 +284,6 @@
                         </div>
                         <div class="flex items-start gap-3">
                             <div class="w-4 h-4 rounded bg-blue-500 flex items-center justify-center text-white text-[9px] shrink-0 mt-0.5">✓</div>
-                            <p class="text-xs text-gray-600 leading-snug"><strong>Hemat Memori</strong> Ga perlu download file berat. Buka di HP sat-set sambil rebahan.</p>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="w-4 h-4 rounded bg-blue-500 flex items-center justify-center text-white text-[9px] shrink-0 mt-0.5">✓</div>
                             <p class="text-xs text-gray-600 leading-snug"><strong>Sekali Bayar</strong> Cukup beli sekali di awal, update-nya gratis seumur hidup.</p>
                         </div>
                     </div>
@@ -174,39 +291,7 @@
             </div>
         </section>
 
-        <section class="w-full px-6 py-20 bg-[#141e3d] text-white relative overflow-hidden reveal-node rounded-none md:rounded-2xl md:mx-auto md:max-w-4xl shadow-2xl z-10">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-blue-500 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
-
-            <div class="relative z-10 text-center">
-                <div class="inline-block px-3 py-1 border border-blue-400/30 rounded-full text-[8px] font-bold tracking-widest text-blue-200 mb-6 uppercase bg-blue-900/40">
-                    ✨ The Real Value
-                </div>
-                
-                <h2 class="text-2xl md:text-4xl font-serif font-bold leading-tight mb-6">
-                    You are never <br> <span class="italic text-gray-400">learning alone.</span>
-                </h2>
-                
-                <p class="text-xs md:text-sm text-gray-300 leading-relaxed mb-10 max-w-md mx-auto">
-                    Ebook berisi teori, Komunitas tempat diskusi. <br>Gabung di <strong>Circle Remote Worker</strong> sekarang.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
-                    <div class="group bg-white/5 backdrop-blur-sm p-5 rounded-lg border border-white/10 hover:bg-white/10 transition duration-300">
-                        <span class="text-2xl block mb-3 grayscale group-hover:grayscale-0 transition">💬</span>
-                        <h4 class="font-bold text-sm mb-1 text-white">Grup Diskusi (No Judgement)</h4>
-                        <p class="text-[10px] text-gray-400 leading-relaxed">Mau tanya hal paling dasar sampai teknis, gas aja. Kita semua pernah jadi pemula kok.</p>
-                    </div>
-                    <div class="group bg-gradient-to-br from-blue-900/60 to-transparent p-5 rounded-lg border border-blue-500/30 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 bg-red-600 text-[7px] font-bold px-2 py-1 text-white">LIVE</div>
-                        <span class="text-2xl block mb-3">🎥</span>
-                        <h4 class="font-bold text-sm mb-1 text-white">Rutin Live Webinar</h4>
-                        <p class="text-[10px] text-gray-400 leading-relaxed">Kita bedah portofolio member, simulasi interview, atau bahas update remote worker terbaru.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="w-full py-16 bg-gray-50 reveal-node relative z-10">
+        <section class="w-full py-16 bg-gray-50 reveal-node relative z-10 border-t border-gray-100">
             <h3 class="text-center text-xs font-bold tracking-[0.2em] text-gray-400 mb-8 uppercase">Kata Mereka</h3>
             
             <div class="slider-container">
@@ -226,22 +311,8 @@
                     <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285401720_9536812.png" alt="Testi"></div>
                     <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285440493_2918523.png" alt="Testi"></div>
                     <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285462691_8601067.png" alt="Testi"></div>
-
+                    
                     <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285052916_4893025.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285117547_3889433.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285138113_4078804.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285163018_1710519.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285186591_5487807.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285210410_1855670.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285243668_6280437.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285268476_3529886.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285295053_9172963.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285315868_7959000.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285352821_5360441.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285375094_4323414.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285401720_9536812.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285440493_2918523.png" alt="Testi"></div>
-                    <div class="slide"><img src="https://cdn.lynkid.my.id/draft-products/21-12-2025/1766285462691_8601067.png" alt="Testi"></div>
                 </div>
             </div>
         </section>
@@ -295,8 +366,9 @@
             </div>
         </section>
 
-    </div> <script>
-        // Reveal Animation
+    </div>
+
+    <script>
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
